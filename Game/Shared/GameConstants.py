@@ -1,8 +1,9 @@
 import os
-import pygame
 
+BLACK = (0, 0, 0)
 
-class GameConstants(object):
-    SCREEN_SIZE = (1024, 768)
+SCREEN_SIZE = (1024, 768)
+MAX_FPS = 60
 
-    MOLARR_HAMMERS_UP_IMG = os.path.join("Game", "Assets", "Images", "Mo'Larr Both Hammers Up.png")
+MOLARR_IMG = os.path.join("Game", "Assets", "Images", "Mo'Larr.png")
+MOUSE_MOVEMENT_THRESHOLD = 20

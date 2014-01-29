@@ -1,26 +1,32 @@
-import Game.Shared.Entity as Entity
+from Game.Shared.Entity import Entity
+from Game.Shared.GameConstants import *
 import pygame
 import numpy as np
 
 
-class Molaar(Entity):
-    def __init__(self, game, position, sprite=None, velocity=(0, 0),
-                 maxSpeed=20, destination=None, health=100):
+class Molarr(Entity):
+    def __init__(self, engine, image=None, velocity=(0, 0),
+                 maxSpeed=40, destination=None, health=100):
 
+        self.velocity = velocity
         self.sprite = None
 
-        if sprite is None:
-            self.sprite = pygame.image.load(game.images["Mo'Larr"]["hammers_up"])
+        if image is None:
+            self.image = pygame.image.load(MOLARR_IMG)
         else:
-            self.sprite = sprite
+            self.image = image
 
-        super(Molaar, self).__init__(game, position, self.sprite, velocity, maxSpeed, destination, health)
+        Entity.__init__(self, engine, self.image,
+                        velocity, maxSpeed, (0, 0), destination, health)
 
     def move(self):
         mousePosition = np.array(pygame.mouse.get_pos(), np.int32)
-        print "position: " + str(self.position)
-        print "mousePosition: " + str(mousePosition)
-        if any(self.position != mousePosition):
-            self.destination = mousePosition
-            #print "Destination: " + str(self.destination.tolist())
-            super(Molaar, self).move()
+
+        displacement = mousePosition - self.getPosition()
+
+        if np.linalg.norm(displacement) > MOUSE_MOVEMENT_THRESHOLD:
+            v = displacement.astype(float) / np.linalg.norm(displacement)
+            v *= self.maxSpeed
+            self.velocity = np.round(v).astype(np.int32)
+
+            self.setPosition(self.getPosition() + self.velocity)

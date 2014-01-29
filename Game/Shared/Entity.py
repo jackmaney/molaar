@@ -1,71 +1,88 @@
-from Game.Shared import GameConstants
+from Game.Shared.GameConstants import *
 import numpy as np
+import pygame
 
 
-class Entity(object):
-    def __init__(self, game, position, sprite, velocity, maxSpeed, destination=None, health=100):
+class Entity(pygame.sprite.Sprite):
+    def __init__(self, engine, image, velocity, maxSpeed,
+                 initialPosition, destination=None, health=100, spriteGroup=None):
 
-        self.game = game
-        self.position = np.array(position, np.int32)
+        if spriteGroup is not None:
+            pygame.sprite.Sprite.__init__(self, spriteGroup)
+        else:
+            pygame.sprite.Sprite.__init__(self)
+
+        self.image = image
+        self.rect = self.image.get_rect()
+        self.setPosition(initialPosition)
+        self.velocity = np.array(velocity, np.int32)
+
+        self.engine = engine
         self.health = health
         self.maxSpeed = maxSpeed
-        self.velocity = np.array(velocity, np.int32)
-        self.sprite = sprite
+
+        self.image = image
         self.destination = None
 
         if destination is not None:
             self.destination = np.array(destination, np.int32)
 
-        self.size = self.sprite.get_size()
+        self.size = self.image.get_size()
+
+    def getPosition(self):
+        return np.array([self.rect.x, self.rect.y], np.int32)
+
+    def setPosition(self, pos):
+        self.rect.x = pos[0]
+        self.rect.y = pos[1]
 
     def outOfBoundsLeft(self):
-        return self.position[0] < 0
+        return self.rect.x < 0
 
     def outOfBoundsTop(self):
-        return self.position[1] < 0
+        return self.rect.y < 0
 
     def outOfBoundsRight(self):
-        return self.position[0] - self.size[0] > GameConstants.SCREEN_SIZE[0]
+        return self.rect.x - self.size[0] > SCREEN_SIZE[0]
 
     def outOfBoundsBottom(self):
-        return self.position[1] - self.size[1] > GameConstants.SCREEN_SIZE[1]
+        return self.rect.y - self.size[1] > SCREEN_SIZE[1]
 
     def keepInWindow(self):
         if self.outOfBoundsLeft():
             self.velocity[0] *= -1
-            self.position[0] = 0
+            self.rect.x = 0
 
         if self.outOfBoundsTop():
             self.velocity[1] *= -1
-            self.position[1] = 0
+            self.rect.y = 0
 
         if self.outOfBoundsRight():
-            self.position[0] = GameConstants.SCREEN_SIZE[0] - self.size[0]
+            self.rect.x = SCREEN_SIZE[0] - self.size[0]
             self.velocity[0] *= -1
 
         if self.outOfBoundsBottom():
-            self.position[1] = GameConstants.SCREEN_SIZE[1] - self.size[1]
+            self.rect.y = SCREEN_SIZE[1] - self.size[1]
             self.velocity[1] *= -1
 
     def move(self):
         if self.destination is not None:
-            v = self.destination.astype(float) - self.position.astype(float)
+            v = self.destination.astype(np.float64) - self.getPosition().astype(np.float64)
             #print "v: " + str(v.tolist())
             length = np.linalg.norm(v)
 
             if length > 0:
-
                 v /= np.linalg.norm(v)
                 v *= self.maxSpeed
 
                 self.velocity = np.round(v).astype(np.int32)
 
-        self.position += self.velocity
+        self.setPosition(self.getPosition() + self.velocity)
         self.keepInWindow()
 
     def render(self):
 
-        self.game.screen.blit(self.sprite, self.position)
+        self.engine.screen.blit(self.image, self.getPosition())
 
 
 

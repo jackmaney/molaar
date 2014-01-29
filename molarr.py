@@ -1,5 +1,5 @@
-from Game.MolarrGame import Game
+from Game.Engine import Engine
 
-g = Game()
+game = Engine()
 
-g.start()
+game.startGame()
