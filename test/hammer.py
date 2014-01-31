@@ -29,7 +29,9 @@ def main():
 
         hammer.update()
 
+        #hammer.image.fill((0,0,255))
         screen.blit(hammer.image, [200, 200])
+
 
         #print clock.get_fps()
 

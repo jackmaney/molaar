@@ -1,5 +1,6 @@
 import pygame
 from Game.Shared.GameConstants import *
+import math
 
 
 class Hammer(pygame.sprite.Sprite):
@@ -24,15 +25,19 @@ class Hammer(pygame.sprite.Sprite):
                 self.angleIncrementCounter = 1
                 self.isSwinging = False
 
-            topleft = self.rect.topleft
+            topleft = [self.rect.topleft[0], self.rect.topleft[1]]
             angle = -1 * self.angleIncrementCounter * HAMMER_ANGLE_INCREMENT_AMOUNT
 
+
             self.image = pygame.transform.rotate(self.original, angle)
-            self.rect = self.image.get_rect(topleft=topleft)
+            self.rect = pygame.Rect(topleft, self.image.get_size())
+
 
             if self.isMovingDown:
                 self.angleIncrementCounter += 1
             else:
                 self.angleIncrementCounter -= 1
+
+
 
 

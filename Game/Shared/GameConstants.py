@@ -10,7 +10,7 @@ MOLARR_IMG = os.path.join("Game", "Assets", "Images", "Mo'Larr.png")
 HAMMER_IMG = os.path.join("Game", "Assets", "Images", "Hammer.png")
 HAMMER_INITIAL_ROTATION_ANGLE = -30
 HAMMER_ANGLE_INCREMENT_AMOUNT = 10
-HAMMER_NUM_INCREMENTS_IN_SWING = 8
+HAMMER_NUM_INCREMENTS_IN_SWING = 10
 
 MOLARR_CENTER_OFFSET = np.array([46, 53], np.int32)
 MOUSE_MOVEMENT_THRESHOLD = 20
