@@ -27,10 +27,13 @@ class Entity(pygame.sprite.Sprite):
         if destination is not None:
             self.destination = np.array(destination, np.int32)
 
-        self.size = self.image.get_size()
+        self.size = np.array(self.image.get_size(), np.int32)
 
     def getPosition(self):
         return np.array([self.rect.x, self.rect.y], np.int32)
+
+    def getCenter(self):
+        return np.ceil(self.getPosition() + self.size.astype(np.float64) / 2.0).astype(np.int32)
 
     def setPosition(self, pos):
         self.rect.x = pos[0]
