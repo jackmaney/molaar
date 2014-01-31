@@ -9,7 +9,6 @@ class Hammer(pygame.sprite.Sprite):
         self.image = pygame.transform.rotate(pygame.image.load(HAMMER_IMG), HAMMER_INITIAL_ROTATION_ANGLE)
         self.original = self.image.copy()
         self.rect = self.image.get_rect()
-        print self.rect.size
         self.isSwinging = False
         self.angleIncrementCounter = 1  # multiplier for increment swing angle
         self.isMovingDown = True  #Toggles whether the hammer is going down or going back up
