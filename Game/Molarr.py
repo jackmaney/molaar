@@ -6,6 +6,7 @@ import numpy as np
 
 
 class Molarr(Entity):
+
     def __init__(self, engine, image=None, velocity=(0, 0),
                  maxSpeed=40, destination=None, health=100):
 
@@ -21,7 +22,8 @@ class Molarr(Entity):
 
         self.hammer = Hammer(self)
 
-        self.engine.eventHandlers = [self.handleEvents] + self.engine.eventHandlers
+        self.engine.eventHandlers = [self.handleEvents] + \
+            self.engine.eventHandlers
 
         Entity.__init__(self, engine, self.image,
                         velocity, maxSpeed, (0, 0), destination, health)
@@ -46,3 +48,7 @@ class Molarr(Entity):
 
     def update(self):
         self.hammer.update()
+
+    def bodyRect(self):
+
+        return pygame.Rect((self.rect.left, self.rect.bottom - MOLARR_SIZE[1]), MOLARR_SIZE)

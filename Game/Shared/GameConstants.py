@@ -6,6 +6,10 @@ BLACK = (0, 0, 0)
 SCREEN_SIZE = (1024, 768)
 MAX_FPS = 60
 
+CANDY_DIR = os.path.join("Game", "Assets", "Images", "Candies")
+CANDY_FILES = [os.path.join(CANDY_DIR, file)
+               for file in os.listdir(CANDY_DIR) if file[-4:] == '.png']
+
 MOLARR_SWINGING_IMGS = []
 
 for i in list(range(30, 101, 10)):

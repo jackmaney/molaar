@@ -1,8 +1,10 @@
 import pygame
 from Game.Shared.GameConstants import *
 from Molarr import Molarr
+from Candy import Candy
 import sys
 import warnings
+import os
 
 
 class Engine(object):
@@ -10,14 +12,19 @@ class Engine(object):
     def __init__(self):
 
         self.player = None
-        self.playerGroup = pygame.sprite.GroupSingle()
+        self.playerGroup = None
         self.candies = pygame.sprite.Group()
+
+        self.allCandies = [pygame.image.load(img) for img in CANDY_FILES]
+
         self.score = 0
 
         self.screen = None
         self.clock = None
 
         self.eventHandlers = [self.handleEvents]
+
+        self.player = Molarr(self)
 
     def handleEvents(self, events):
         for event in events:
@@ -32,12 +39,12 @@ class Engine(object):
         self.screen = pygame.display.set_mode(SCREEN_SIZE)
         self.clock = pygame.time.Clock()
 
-        self.player = Molarr(self)
+        candy = Candy(self)
 
         while True:
             self.clock.tick(MAX_FPS)
 
-            #print len(self.eventHandlers)
+            # print len(self.eventHandlers)
             handlers_to_remove = []
             events = pygame.event.get()
 
@@ -45,7 +52,8 @@ class Engine(object):
                 try:
                     handler(events)
                 except Exception as e:
-                    warnings.warn("WARNING: Found zombie event handler. Removing...")
+                    warnings.warn(
+                        "WARNING: Found zombie event handler. Removing...")
                     handlers_to_remove.append(handler)
 
             for handler in handlers_to_remove:
@@ -62,12 +70,16 @@ class Engine(object):
 
             self.player.hammer.update()
 
+            if pygame.sprite.collide_rect(self.player, candy):
+                if self.player.bodyRect().colliderect(candy.rect):
+                    print "Body Blow!"
+                elif self.player.hammer.isSwinging and self.player.hammer.headRect().colliderect(candy.rect):
+                    print "Hammer hit!"
+                else:
+                    print "General collision"
+
             self.player.render()
 
+            candy.render()
+
             pygame.display.update()
-
-
-
-
-
-
