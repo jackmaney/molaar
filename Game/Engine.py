@@ -64,7 +64,7 @@ class Engine(object):
                     pygame.quit()
                     sys.exit(0)
 
-            self.screen.fill(BLACK)
+            self.screen.blit(BACKGROUND, (0, 0))
 
             self.player.move()
 

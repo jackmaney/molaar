@@ -1,10 +1,21 @@
 import os
 import numpy as np
+import pygame
 
 BLACK = (0, 0, 0)
 
 SCREEN_SIZE = (1024, 768)
 MAX_FPS = 60
+
+BACKGROUND = pygame.Surface(SCREEN_SIZE)
+BACKGROUND_IMG = pygame.image.load(
+    os.path.join("Game", "Assets", "Images", "ground.png"))
+BACKGROUND_IMG_SIZE = (512, 256)
+
+for i in [0, 1]:
+    for j in [0, 1, 2]:
+        BACKGROUND.blit(BACKGROUND_IMG,
+                        (i * BACKGROUND_IMG_SIZE[0], j * BACKGROUND_IMG_SIZE[1]))
 
 CANDY_DIR = os.path.join("Game", "Assets", "Images", "Candies")
 CANDY_FILES = [os.path.join(CANDY_DIR, file)
