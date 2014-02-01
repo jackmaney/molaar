@@ -6,6 +6,11 @@ BLACK = (0, 0, 0)
 SCREEN_SIZE = (1024, 768)
 MAX_FPS = 60
 
+MOLARR_SWINGING_IMGS = []
+
+for i in list(range(30, 101, 10)):
+    MOLARR_SWINGING_IMGS.append(os.path.join("Game", "Assets", "Images", "Hammer" + str(i) + ".png"))
+
 MOLARR_IMG = os.path.join("Game", "Assets", "Images", "Mo'Larr.png")
 HAMMER_IMG = os.path.join("Game", "Assets", "Images", "Hammer.png")
 HAMMER_INITIAL_ROTATION_ANGLE = -30

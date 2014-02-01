@@ -30,7 +30,7 @@ class Entity(pygame.sprite.Sprite):
         self.size = np.array(self.image.get_size(), np.int32)
 
     def getPosition(self):
-        return np.array([self.rect.x, self.rect.y], np.int32)
+        return np.array(self.rect.topleft, np.int32)
 
     def getCenter(self):
         return np.ceil(self.getPosition() + self.size.astype(np.float64) / 2.0).astype(np.int32)
@@ -71,7 +71,6 @@ class Entity(pygame.sprite.Sprite):
     def move(self):
         if self.destination is not None:
             v = self.destination.astype(np.float64) - self.getPosition().astype(np.float64)
-            #print "v: " + str(v.tolist())
             length = np.linalg.norm(v)
 
             if length > 0:
