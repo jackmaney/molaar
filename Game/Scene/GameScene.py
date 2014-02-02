@@ -30,9 +30,9 @@ class GameScene(Scene):
                 self.engine.playSound("impact")
                 candy.kill()
 
-        if self.engine.gameTimer - self.engine.loadEnemyTimer >= TIME_BETWEEN_ENEMY_LOADS:
+        if self.engine.timeKeeper.timer - self.engine.loadEnemyTimer >= TIME_BETWEEN_ENEMY_LOADS:
             self.engine.loadEnemies()
-            self.engine.loadEnemyTimer = self.engine.gameTimer
+            self.engine.loadEnemyTimer = self.engine.timeKeeper.timer
 
     def render(self):
         Scene.render(self)

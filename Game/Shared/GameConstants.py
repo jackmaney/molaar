@@ -63,4 +63,33 @@ MAX_CANDY_THRESHOLDS = {
     180000: 15
 }
 
+CANDY_DAMAGE_THRESHOLDS = {
+    20000: {"min": 1, "max": 2},
+    30000: {"min": 2, "max": 4},
+    45000: {"min": 3, "max": 5},
+    60000: {"min": 5, "max": 8},
+    90000: {"min": 7, "max": 10},
+    120000: {"min": 10, "max": 15},
+    180000: {"min": 15, "max": 20}
+}
+
+CANDY_SPEED_THRESHOLDS = {
+    10000: {"min": 1, "max": 5},
+    20000: {"min": 3, "max": 7},
+    30000: {"min": 5, "max": 10},
+    60000: {"min": 6, "max": 12},
+    90000: {"min": 8, "max": 15},
+    120000: {"min": 12, "max": 20},
+    180000: {"min": 20, "max": 25}
+}
+
+CANDY_SEEKER_PROBABILITY_THRESHOLDS = {
+    10000: 0,
+    20000: 0.1,
+    30000: 0.25,
+    45000: 0.33,
+    60000: 0.5
+}
+
+
 TIME_BETWEEN_ENEMY_LOADS = 500

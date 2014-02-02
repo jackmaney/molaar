@@ -6,14 +6,23 @@ import numpy as np
 
 
 class Candy(Entity):
-    def __init__(self, engine, image=None, maxSpeed=20, health=1, damage=None):
+    def __init__(self, engine, image=None, maxSpeed=None, health=1, isSeeker=None):
 
         self.engine = engine
 
-        if damage is None:
-            self.damage = randint(1,5)
+        self.damage = self.engine.timeKeeper.candyDamage()
+
+        if maxSpeed is None:
+            self.maxSpeed = self.engine.timeKeeper.candySpeed()
         else:
-            self.damage = damage
+            self.maxSpeed = maxSpeed
+
+        self.destination = None
+
+        if isSeeker is None:
+            self.isSeeker = self.engine.timeKeeper.isCandyASeeker()
+        else:
+            self.isSeeker = isSeeker
 
         if image is None:
             self.image = choice(self.engine.allCandies)
@@ -43,11 +52,25 @@ class Candy(Entity):
             velocity[1] = abs(velocity[1])
 
         velocity /= np.linalg.norm(velocity)
-        velocity *= randint(1, maxSpeed)
+        velocity *= self.maxSpeed
 
         self.velocity = np.round(velocity).astype(np.int32)
 
         self.initialPosition = (x, y)
 
         Entity.__init__(self, engine, self.image,
-                        self.velocity, maxSpeed, self.initialPosition, destination=None, health=health)
+                        self.velocity, self.maxSpeed, self.initialPosition,
+                        destination=self.destination, health=health)
+
+    def update(self):
+        if self.isSeeker:
+            velocity = np.array(self.engine.player.centerOfBody(), np.float64) - \
+                np.array(self.getCenter(), np.float64)
+
+            velocity /= np.linalg.norm(velocity)
+            velocity *= self.maxSpeed
+
+            self.velocity = velocity
+
+
+        Entity.update(self)

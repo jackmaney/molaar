@@ -1,17 +1,15 @@
-import pygame
 from Game.Shared.GameConstants import *
 from Game.Scene import *
 from Molarr import Molarr
 from Candy import Candy
-import warnings
-
+from TimeKeeper import TimeKeeper
 
 class Engine(object):
 
     def __init__(self):
 
         self.score = 0
-        self.gameTimer = 0
+        self.timeKeeper = TimeKeeper(self)
 
         self.player = None
         self.playerGroup = None
@@ -54,10 +52,9 @@ class Engine(object):
 
     def resetGame(self):
         self.score = 0
-        self.gameTimer = 0
+        self.timeKeeper = TimeKeeper(self)
         self.player.health = 100
         self.changeScene("playGame")
-
 
     def changeScene(self, sceneName):
         self.handlersToRemove.append(self.currentScene.handleEvents)
@@ -70,31 +67,18 @@ class Engine(object):
         sound.play()
 
     def loadEnemies(self):
-        #print self.gameTimer
-        futureThresholds = [n for n in MAX_CANDY_THRESHOLDS if n >= self.gameTimer]
 
-        numEnemies = None
+        numCandies = self.timeKeeper.numCandies()
 
-        if len(futureThresholds) == 0:
-            numEnemies = MAX_CANDY_THRESHOLDS[max(MAX_CANDY_THRESHOLDS.keys())]
-        else:
-            numEnemies = MAX_CANDY_THRESHOLDS[min(futureThresholds)]
-
-        # print numEnemies
-
-        while len(self.candies) < numEnemies:
+        while len(self.candies) < numCandies:
             self.candies.add(Candy(self))
 
     def startGame(self):
 
-
-
-        print len(self.candies)
-
         while True:
             self.clock.tick(MAX_FPS)
 
-            self.gameTimer += self.clock.get_time()
+            self.timeKeeper.timer += self.clock.get_time()
 
             self.pressedKeys = pygame.key.get_pressed()
 

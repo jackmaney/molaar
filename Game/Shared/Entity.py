@@ -69,15 +69,6 @@ class Entity(pygame.sprite.Sprite):
             self.velocity[1] *= -1
 
     def update(self):
-        if self.destination is not None:
-            v = self.destination.astype(np.float64) - self.getPosition().astype(np.float64)
-            length = np.linalg.norm(v)
-
-            if length > 0:
-                v /= np.linalg.norm(v)
-                v *= self.maxSpeed
-
-                self.velocity = np.round(v).astype(np.int32)
 
         self.setPosition(self.getPosition() + self.velocity)
         self.keepInWindow()
