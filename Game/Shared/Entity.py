@@ -46,10 +46,10 @@ class Entity(pygame.sprite.Sprite):
         return self.rect.y < 0
 
     def outOfBoundsRight(self):
-        return self.rect.x - self.size[0] > SCREEN_SIZE[0]
+        return self.rect.x + self.size[0] > SCREEN_SIZE[0]
 
     def outOfBoundsBottom(self):
-        return self.rect.y - self.size[1] > SCREEN_SIZE[1]
+        return self.rect.y + self.size[1] > SCREEN_SIZE[1]
 
     def keepInWindow(self):
         if self.outOfBoundsLeft():
@@ -68,7 +68,7 @@ class Entity(pygame.sprite.Sprite):
             self.rect.y = SCREEN_SIZE[1] - self.size[1]
             self.velocity[1] *= -1
 
-    def move(self):
+    def update(self):
         if self.destination is not None:
             v = self.destination.astype(np.float64) - self.getPosition().astype(np.float64)
             length = np.linalg.norm(v)

@@ -52,8 +52,6 @@ class Engine(object):
             handlers_to_remove = []
             events = pygame.event.get()
 
-
-
             for handler in self.eventHandlers:
                 try:
                     handler(events)
@@ -65,6 +63,7 @@ class Engine(object):
             self.screen.blit(BACKGROUND, (0, 0))
 
             self.player.update()
+            self.candies.update()
 
             candidateCandies = pygame.sprite.spritecollide(self.player, self.candies, False)
             for candy in candidateCandies:

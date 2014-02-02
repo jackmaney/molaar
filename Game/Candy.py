@@ -1,13 +1,12 @@
 import pygame
 from Game.Shared.Entity import Entity
 from Game.Shared.GameConstants import *
-from random import choice, randint, random
+from random import choice, randint
+import numpy as np
 
 
 class Candy(Entity):
-
-    def __init__(self, engine, image=None, velocity=(0, 0), maxSpeed=20,
-                 initialPosition=None, destination=None, health=1):
+    def __init__(self, engine, image=None, maxSpeed=20, health=1):
 
         self.engine = engine
 
@@ -18,23 +17,32 @@ class Candy(Entity):
 
         self.rect = self.image.get_rect()
 
-        if initialPosition is None:
-            # Equal chance of appearing on the top, right, or bottom sides
-            rand = random()
-            x, y = (0, 0)
+        # Equal chance of appearing on the top, right, or bottom sides
+        rand = randint(1, 3)
+        x, y = (0, 0)
 
-            if rand < 0.33:
-                x = randint(0, SCREEN_SIZE[0] - self.rect.width)
-            elif rand < 0.66:
-                x = SCREEN_SIZE[0] - self.rect.width
-                y = randint(0, SCREEN_SIZE[1] - self.rect.height)
-            else:
-                y = SCREEN_SIZE[1] - self.rect.height
-                x = randint(0, SCREEN_SIZE[1] - self.rect.width)
+        velX = choice(list(range(-10, 0)) + list(range(1, 10)))
+        velY = choice(list(range(-10, 0)) + list(range(1, 10)))
 
-            self.initialPosition = (x, y)
+        velocity = np.array([velX, velY], np.float64)
+        if rand == 1:
+            x = randint(0, SCREEN_SIZE[0] - self.rect.width)
+            velocity[1] = abs(velocity[1])
+        elif rand == 2:
+            x = SCREEN_SIZE[0] - self.rect.width
+            y = randint(0, SCREEN_SIZE[1] - self.rect.height)
+            velocity[0] = abs(velocity[0])
         else:
-            self.initialPosition = initialPosition
+            y = SCREEN_SIZE[1] - self.rect.height
+            x = randint(0, SCREEN_SIZE[1] - self.rect.width)
+            velocity[1] = abs(velocity[1])
+
+        velocity /= np.linalg.norm(velocity)
+        velocity *= randint(1, maxSpeed)
+
+        self.velocity = np.round(velocity).astype(np.int32)
+
+        self.initialPosition = (x, y)
 
         Entity.__init__(self, engine, self.image,
-                        velocity, maxSpeed, self.initialPosition, destination, health)
+                        self.velocity, maxSpeed, self.initialPosition, destination=None, health=health)
