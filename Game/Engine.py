@@ -51,7 +51,7 @@ class Engine(object):
             for handler in self.eventHandlers:
                 try:
                     handler(events)
-                except Exception as e:
+                except Exception:
                     warnings.warn(
                         "WARNING: Found zombie event handler. Removing...")
                     handlers_to_remove.append(handler)
@@ -68,17 +68,24 @@ class Engine(object):
 
             self.player.move()
 
-            self.player.hammer.update()
+            self.player.update()
 
             if pygame.sprite.collide_rect(self.player, candy):
                 if self.player.bodyRect().colliderect(candy.rect):
                     print "Body Blow!"
-                elif self.player.hammer.isSwinging and self.player.hammer.headRect().colliderect(candy.rect):
+                elif self.player.isSwinging and self.player.hammerHeadRect().colliderect(candy.rect):
                     print "Hammer hit!"
-                else:
-                    print "General collision"
 
             self.player.render()
+
+            # blarg = pygame.Surface(MOLARR_SIZE)
+            # gah = pygame.Surface(self.player.rect.size)
+            # blarg.fill((0, 0, 255))
+            # gah.fill(BLACK)
+            # bodyRect = self.player.bodyRect()
+            # rect = self.player.rect
+            # self.screen.blit(gah, (rect.x, rect.y))
+            # self.screen.blit(blarg, (bodyRect.x, bodyRect.y))
 
             candy.render()
 
