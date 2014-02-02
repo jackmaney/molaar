@@ -53,6 +53,7 @@ MOUSE_MOVEMENT_THRESHOLD = 20
 TURN_THRESHOLD = 5
 
 SOUND_IMPACT_FILE = os.path.join("Game", "Assets", "Sounds", "pumpkin_break_01_0.wav")
+GAME_MUSIC_FILE = os.path.join("Game", "Assets", "Music", "battleThemeA.wav")
 
 MAX_CANDY_THRESHOLDS = {
     30000: 5,

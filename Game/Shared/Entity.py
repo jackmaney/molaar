@@ -33,7 +33,7 @@ class Entity(pygame.sprite.Sprite):
         return np.array(self.rect.topleft, np.int32)
 
     def getCenter(self):
-        return np.ceil(self.getPosition() + self.rect.size / 2.0).astype(np.int32)
+        return np.ceil(self.getPosition() + np.array(self.rect.size) / 2.0).astype(np.int32)
 
     def setPosition(self, pos):
         self.rect.x = pos[0]

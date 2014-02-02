@@ -1,11 +1,17 @@
 from Game.Shared.GameConstants import *
 from Game.Scene.Scene import Scene
+import pygame
 
 
 class GameScene(Scene):
     def __init__(self, engine):
         Scene.__init__(self, engine)
         self.engine.loadEnemies()
+        pygame.mixer.init()
+
+        pygame.mixer.music.set_volume(0.5)
+        pygame.mixer.music.load(GAME_MUSIC_FILE)
+        pygame.mixer.music.play(loops=-1)
 
     def update(self):
 
@@ -23,6 +29,7 @@ class GameScene(Scene):
                 candy.kill()
 
                 if self.engine.player.health <= 0:
+                    pygame.mixer.music.stop()
                     self.engine.changeScene("gameOver")
 
             elif self.engine.player.isSwinging and self.engine.player.hammerHeadRect().colliderect(candy.rect):

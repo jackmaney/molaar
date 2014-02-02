@@ -64,7 +64,7 @@ class Candy(Entity):
 
     def update(self):
         if self.isSeeker:
-            velocity = np.array(self.engine.player.centerOfBody, np.float64) - \
+            velocity = np.array(self.engine.player.centerOfBody(), np.float64) - \
                 np.array(self.getCenter(), np.float64)
 
             velocity /= np.linalg.norm(velocity)
