@@ -44,7 +44,6 @@ class Engine(object):
         while True:
             self.clock.tick(MAX_FPS)
 
-            # print len(self.eventHandlers)
             handlers_to_remove = []
             events = pygame.event.get()
 
@@ -77,15 +76,6 @@ class Engine(object):
                     print "Hammer hit!"
 
             self.player.render()
-
-            # blarg = pygame.Surface(MOLARR_SIZE)
-            # gah = pygame.Surface(self.player.rect.size)
-            # blarg.fill((0, 0, 255))
-            # gah.fill(BLACK)
-            # bodyRect = self.player.bodyRect()
-            # rect = self.player.rect
-            # self.screen.blit(gah, (rect.x, rect.y))
-            # self.screen.blit(blarg, (bodyRect.x, bodyRect.y))
 
             candy.render()
 

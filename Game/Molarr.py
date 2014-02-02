@@ -145,7 +145,6 @@ class Molarr(Entity):
             self.facingRight = not self.facingRight
             self.flipImage = False
 
-
         self.engine.screen.blit(self.image, self.getPosition())
 
     def advanceAnimationIndex(self):
