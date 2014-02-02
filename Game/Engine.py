@@ -1,10 +1,9 @@
 import pygame
 from Game.Shared.GameConstants import *
+from Game.Scene import *
 from Molarr import Molarr
 from Candy import Candy
-import sys
 import warnings
-import os
 
 
 class Engine(object):
@@ -23,6 +22,7 @@ class Engine(object):
         self.clock = None
 
         self.eventHandlers = [self.handleEvents]
+        self.handlersToRemove = []
 
         self.player = Molarr(self)
 
@@ -37,13 +37,43 @@ class Engine(object):
             "impact": impactSound
         }
 
+        self.loadEnemyTimer = 0
+
+        self.scenes = {
+            "mainMenu": MainMenuScene,
+            "playGame": GameScene
+        }
+
+        self.currentScene = MainMenuScene(self)
+
+    def changeScene(self, sceneName):
+        self.handlersToRemove.append(self.currentScene.handleEvents)
+
+        self.currentScene = self.scenes[sceneName](self)
+
     def playSound(self, soundName):
         sound = self.sounds[soundName]
         sound.stop()
         sound.play()
 
+    def loadEnemies(self):
+        time = pygame.time.get_ticks()
+        print time
+        futureThresholds = [n for n in MAX_CANDY_THRESHOLDS if n >= time]
+
+        numEnemies = None
+
+        if futureThresholds == []:
+            numEnemies = MAX_CANDY_THRESHOLDS[max(MAX_CANDY_THRESHOLDS.keys())]
+        else:
+            numEnemies = MAX_CANDY_THRESHOLDS[min(futureThresholds)]
+
+        while len(self.candies) < numEnemies:
+            self.candies.add(Candy(self))
 
     def handleEvents(self, events):
+        self.eventHandlers = [h for h in self.eventHandlers if h not in self.handlersToRemove]
+        self.handlersToRemove = []
         for event in events:
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -51,12 +81,9 @@ class Engine(object):
 
     def startGame(self):
 
-
-
         self.screen = pygame.display.set_mode(SCREEN_SIZE)
         self.clock = pygame.time.Clock()
 
-        self.candies.add(Candy(self))
         print len(self.candies)
 
         while True:
@@ -64,34 +91,19 @@ class Engine(object):
 
             self.pressedKeys = pygame.key.get_pressed()
 
-            handlers_to_remove = []
             events = pygame.event.get()
 
-            for handler in self.eventHandlers:
-                try:
-                    handler(events)
-                except Exception:
-                    warnings.warn(
-                        "WARNING: Found zombie event handler. Removing...")
-                    handlers_to_remove.append(handler)
+            for event in events:
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    exit(0)
+
+            self.currentScene.handleEvents(events)
 
             self.screen.blit(BACKGROUND, (0, 0))
 
-            self.player.update()
-            self.candies.update()
+            self.currentScene.update()
 
-            candidateCandies = pygame.sprite.spritecollide(self.player, self.candies, False)
-            for candy in candidateCandies:
-                if self.player.bodyRect().colliderect(candy.rect):
-                    print "Body Blow!"
-                elif self.player.isSwinging and self.player.hammerHeadRect().colliderect(candy.rect):
-                    print "Hammer hit!"
-                    self.playSound("impact")
-                    candy.kill()
-                    print len(self.candies)
-
-            self.player.render()
-
-            self.candies.draw(self.screen)
+            self.currentScene.render()
 
             pygame.display.update()

@@ -3,6 +3,7 @@ import numpy as np
 import pygame
 
 BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
 
 SCREEN_SIZE = (1024, 768)
 MAX_FPS = 60
@@ -53,3 +54,13 @@ TURN_THRESHOLD = 5
 
 SOUND_IMPACT_FILE = os.path.join("Game", "Assets", "Sounds", "pumpkin_break_01_0.wav")
 
+MAX_CANDY_THRESHOLDS = {
+    30000: 5,
+    60000: 7,
+    90000: 8,
+    120000: 10,
+    150000: 12,
+    180000: 15
+}
+
+TIME_BETWEEN_ENEMY_LOADS = 500
