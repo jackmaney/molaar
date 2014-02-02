@@ -12,7 +12,7 @@ class Scene(object):
         self.texts.append({"text": font.render(text, True, color, background), "position": position})
 
     def addCenteredText(self, text, y, color=WHITE, background=None, size=17):
-        font = pygame.font.Font(None, size)
+        font = pygame.font.Font(pygame.font.match_font("Georgia"), size)
         renderedText = font.render(text, True, color, background)
         width = renderedText.get_rect().width
         position = (int(SCREEN_SIZE[0] / 2.0) - int(width / 2.0), y)

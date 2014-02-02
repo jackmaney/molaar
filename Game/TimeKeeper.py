@@ -7,6 +7,9 @@ class TimeKeeper(object):
         self.engine = engine
         self.timer = 0
 
+    def resetTimer(self):
+        self.timer = 0
+
     def getMinKey(self, thresholds):
 
         futureKeys = [time for time in thresholds if time >= self.timer]

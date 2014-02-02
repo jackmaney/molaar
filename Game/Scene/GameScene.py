@@ -6,6 +6,8 @@ import pygame
 class GameScene(Scene):
     def __init__(self, engine):
         Scene.__init__(self, engine)
+
+        self.engine.timeKeeper.resetTimer()
         self.engine.loadEnemies()
         pygame.mixer.init()
 
@@ -13,11 +15,16 @@ class GameScene(Scene):
         pygame.mixer.music.load(GAME_MUSIC_FILE)
         pygame.mixer.music.play(loops=-1)
 
+
+
+
+
     def update(self):
 
         self.texts = []
         self.addText("Score: " + str(self.engine.score), (0, 0))
         self.addText("Health: " + str(self.engine.player.health), (0, 20))
+        self.addText("Time: " + self.engine.msToHMS(self.engine.timeKeeper.timer), (0, 40))
 
         self.engine.player.update()
         self.engine.candies.update()
@@ -33,7 +40,11 @@ class GameScene(Scene):
                     self.engine.changeScene("gameOver")
 
             elif self.engine.player.isSwinging and self.engine.player.hammerHeadRect().colliderect(candy.rect):
-                self.engine.score += 1
+                self.engine.player.numCandiesCrushed += 1
+                if candy.isSeeker:
+                    self.engine.score += 2
+                else:
+                    self.engine.score += 1
                 self.engine.playSound("impact")
                 candy.kill()
 

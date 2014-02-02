@@ -13,7 +13,9 @@ class Molarr(Entity):
         self.sprite = None
         self.engine = engine
 
-        self.frames = [pygame.image.load(img) for img in MOLARR_SWINGING_IMGS]
+        self.numCandiesCrushed = 0
+
+        self.frames = [pygame.image.load(img).convert_alpha() for img in MOLARR_SWINGING_IMGS]
         if image is None:
             self.image = self.frames[0]
         else:

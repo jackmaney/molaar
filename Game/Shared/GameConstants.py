@@ -42,6 +42,7 @@ HAMMER_COLLISION_RECTS = [
 ]
 
 MOLARR_IMG = os.path.join("Game", "Assets", "Images", "Mo'Larr.png")
+ANDANTE_IMG = os.path.join("Game", "Assets", "Images", "Andante.png")
 HAMMER_IMG = os.path.join("Game", "Assets", "Images", "Hammer.png")
 HAMMER_INITIAL_ROTATION_ANGLE = -30
 HAMMER_ANGLE_INCREMENT_AMOUNT = 10
@@ -53,6 +54,8 @@ MOUSE_MOVEMENT_THRESHOLD = 20
 TURN_THRESHOLD = 5
 
 SOUND_IMPACT_FILE = os.path.join("Game", "Assets", "Sounds", "pumpkin_break_01_0.wav")
+SOUND_DUCT_TAPE_FILE = os.path.join("Game", "Assets", "Sounds", "89782__zerolagtime__tape03-duct-tape-3_MODIFIED.wav")
+OPENING_MUSIC_FILE = os.path.join("Game", "Assets", "Music", "Elegy_Dm.wav")
 GAME_MUSIC_FILE = os.path.join("Game", "Assets", "Music", "battleThemeA.wav")
 
 MAX_CANDY_THRESHOLDS = {
@@ -91,6 +94,5 @@ CANDY_SEEKER_PROBABILITY_THRESHOLDS = {
     45000: 0.33,
     60000: 0.5
 }
-
 
 TIME_BETWEEN_ENEMY_LOADS = 500
