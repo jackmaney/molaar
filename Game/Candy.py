@@ -6,9 +6,14 @@ import numpy as np
 
 
 class Candy(Entity):
-    def __init__(self, engine, image=None, maxSpeed=20, health=1):
+    def __init__(self, engine, image=None, maxSpeed=20, health=1, damage=None):
 
         self.engine = engine
+
+        if damage is None:
+            self.damage = randint(1,5)
+        else:
+            self.damage = damage
 
         if image is None:
             self.image = choice(self.engine.allCandies)

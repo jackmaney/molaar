@@ -26,8 +26,6 @@ class Molarr(Entity):
         # Toggles whether the hammer is going down or going back up
         self.isSwingingDown = True
 
-        self.engine.eventHandlers = [self.handleEvents] + \
-            self.engine.eventHandlers
 
         # Are we facing right or left?
         self.facingRight = True

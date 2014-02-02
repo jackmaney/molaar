@@ -1,6 +1,4 @@
-import pygame
 from Game.Scene import Scene
-from Game.Scene import GameScene
 from Game.Shared.GameConstants import *
 
 

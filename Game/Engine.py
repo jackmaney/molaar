@@ -10,6 +10,9 @@ class Engine(object):
 
     def __init__(self):
 
+        self.score = 0
+        self.gameTimer = 0
+
         self.player = None
         self.playerGroup = None
         self.candies = pygame.sprite.Group()
@@ -21,7 +24,6 @@ class Engine(object):
         self.screen = None
         self.clock = None
 
-        self.eventHandlers = [self.handleEvents]
         self.handlersToRemove = []
 
         self.player = Molarr(self)
@@ -30,6 +32,9 @@ class Engine(object):
 
         pygame.init()
         pygame.mixer.init()
+
+        self.screen = pygame.display.set_mode(SCREEN_SIZE)
+        self.clock = pygame.time.Clock()
 
         impactSound = pygame.mixer.Sound(SOUND_IMPACT_FILE)
 
@@ -41,10 +46,18 @@ class Engine(object):
 
         self.scenes = {
             "mainMenu": MainMenuScene,
-            "playGame": GameScene
+            "playGame": GameScene,
+            "gameOver": GameOverScene
         }
 
         self.currentScene = MainMenuScene(self)
+
+    def resetGame(self):
+        self.score = 0
+        self.gameTimer = 0
+        self.player.health = 100
+        self.changeScene("playGame")
+
 
     def changeScene(self, sceneName):
         self.handlersToRemove.append(self.currentScene.handleEvents)
@@ -57,37 +70,31 @@ class Engine(object):
         sound.play()
 
     def loadEnemies(self):
-        time = pygame.time.get_ticks()
-        print time
-        futureThresholds = [n for n in MAX_CANDY_THRESHOLDS if n >= time]
+        #print self.gameTimer
+        futureThresholds = [n for n in MAX_CANDY_THRESHOLDS if n >= self.gameTimer]
 
         numEnemies = None
 
-        if futureThresholds == []:
+        if len(futureThresholds) == 0:
             numEnemies = MAX_CANDY_THRESHOLDS[max(MAX_CANDY_THRESHOLDS.keys())]
         else:
             numEnemies = MAX_CANDY_THRESHOLDS[min(futureThresholds)]
 
+        # print numEnemies
+
         while len(self.candies) < numEnemies:
             self.candies.add(Candy(self))
 
-    def handleEvents(self, events):
-        self.eventHandlers = [h for h in self.eventHandlers if h not in self.handlersToRemove]
-        self.handlersToRemove = []
-        for event in events:
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                exit(0)
-
     def startGame(self):
 
-        self.screen = pygame.display.set_mode(SCREEN_SIZE)
-        self.clock = pygame.time.Clock()
+
 
         print len(self.candies)
 
         while True:
             self.clock.tick(MAX_FPS)
+
+            self.gameTimer += self.clock.get_time()
 
             self.pressedKeys = pygame.key.get_pressed()
 

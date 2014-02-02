@@ -6,7 +6,6 @@ class Scene(object):
         self.engine = engine
         self.texts = []
         pygame.font.init()
-        self.engine.eventHandlers.append(self.handleEvents)
 
     def addText(self, text, position, color=WHITE, background=None, size=17):
         font = pygame.font.Font(None, size)
