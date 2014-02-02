@@ -33,20 +33,28 @@ class Molarr(Entity):
         self.facingRight = True
         # Signals to the renderer that the direction has changed
         self.flipImage = False
+        # If true, there is no flipping
+        self.overrideFlip = False
 
         Entity.__init__(self, engine, self.image,
                         velocity, maxSpeed, (0, 0), destination, health)
 
     def handleEvents(self, events):
+        pressed = self.engine.pressedKeys
+
+        self.overrideFlip = pressed[pygame.K_LSHIFT]
 
         for event in events:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 self.isSwinging = True
+
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
+                if event.key == pygame.K_SPACE and not self.overrideFlip:
                     self.flipImage = True
 
     def update(self):
+
+        self.move()
 
         if self.isSwinging:
             self.advanceAnimationIndex()
@@ -61,13 +69,12 @@ class Molarr(Entity):
 
         displacement = mousePosition - self.centerOfBody()
 
-        # dist = np.linalg.norm(displacement)
+        dist = np.linalg.norm(displacement)
 
-        # if dist > TURN_THRESHOLD:
-        #     if (displacement[0] < 0 and self.facingRight) or \
-        #             (displacement[0] > 0 and not self.facingRight):
-        #         self.facingRight = not self.facingRight
-        #         self.flipImage = True
+        if dist > TURN_THRESHOLD:
+            if (displacement[0] < 0 and self.facingRight) or \
+                    (displacement[0] > 0 and not self.facingRight):
+                self.flipImage = True
 
         self.setPosition(self.getPosition() + displacement)
         self.keepInWindow()
@@ -138,14 +145,18 @@ class Molarr(Entity):
             self.rect.y = SCREEN_SIZE[1] - self.rect.height
 
     def render(self):
-        if self.flipImage:
-            self.image = pygame.transform.flip(self.image, True, False)
-            self.rect.x -= self.rect.width - MOLARR_SIZE[0]
-            print self.rect.x, self.rect.y
+        if self.flipImage and not self.overrideFlip:
             self.facingRight = not self.facingRight
+
+            if self.facingRight:
+                self.rect.x += self.rect.width - MOLARR_SIZE[0]
+            else:
+                self.rect.x -= self.rect.width - MOLARR_SIZE[0]
+            self.image = pygame.transform.flip(self.image, True, False)
+
             self.flipImage = False
 
-        self.engine.screen.blit(self.image, self.getPosition())
+        self.engine.screen.blit(self.image, self.rect.topleft)
 
     def advanceAnimationIndex(self):
         numFrames = len(self.frames)

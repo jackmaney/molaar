@@ -26,6 +26,8 @@ class Engine(object):
 
         self.player = Molarr(self)
 
+        self.pressedKeys = None
+
     def handleEvents(self, events):
         for event in events:
             if event.type == pygame.QUIT:
@@ -45,8 +47,12 @@ class Engine(object):
         while True:
             self.clock.tick(MAX_FPS)
 
+            self.pressedKeys = pygame.key.get_pressed()
+
             handlers_to_remove = []
             events = pygame.event.get()
+
+
 
             for handler in self.eventHandlers:
                 try:
@@ -56,17 +62,7 @@ class Engine(object):
                         "WARNING: Found zombie event handler. Removing...")
                     handlers_to_remove.append(handler)
 
-            for handler in handlers_to_remove:
-                self.eventHandlers.remove(handler)
-
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit(0)
-
             self.screen.blit(BACKGROUND, (0, 0))
-
-            self.player.move()
 
             self.player.update()
 
