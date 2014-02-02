@@ -40,6 +40,7 @@ class Engine(object):
         self.clock = pygame.time.Clock()
 
         self.candies.add(Candy(self))
+        print len(self.candies)
 
         while True:
             self.clock.tick(MAX_FPS)
@@ -75,6 +76,8 @@ class Engine(object):
                     print "Body Blow!"
                 elif self.player.isSwinging and self.player.hammerHeadRect().colliderect(candy.rect):
                     print "Hammer hit!"
+                    candy.kill()
+                    print len(self.candies)
 
             self.player.render()
 
