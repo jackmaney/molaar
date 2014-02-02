@@ -6,8 +6,8 @@ from random import choice
 
 class Candy(Entity):
 
-    def __init__(self, engine, image=None, velocity=[0, 0], maxSpeed=20,
-                 initialPosition=[500, 500], destination=None, health=1):
+    def __init__(self, engine, image=None, velocity=(0, 0), maxSpeed=20,
+                 initialPosition=(500, 500), destination=None, health=1):
 
         self.engine = engine
 

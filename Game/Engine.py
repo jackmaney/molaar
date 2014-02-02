@@ -39,7 +39,7 @@ class Engine(object):
         self.screen = pygame.display.set_mode(SCREEN_SIZE)
         self.clock = pygame.time.Clock()
 
-        candy = Candy(self)
+        self.candies.add(Candy(self))
 
         while True:
             self.clock.tick(MAX_FPS)
@@ -69,7 +69,8 @@ class Engine(object):
 
             self.player.update()
 
-            if pygame.sprite.collide_rect(self.player, candy):
+            candidateCandies = pygame.sprite.spritecollide(self.player, self.candies, False)
+            for candy in candidateCandies:
                 if self.player.bodyRect().colliderect(candy.rect):
                     print "Body Blow!"
                 elif self.player.isSwinging and self.player.hammerHeadRect().colliderect(candy.rect):
@@ -77,6 +78,6 @@ class Engine(object):
 
             self.player.render()
 
-            candy.render()
+            self.candies.draw(self.screen)
 
             pygame.display.update()
