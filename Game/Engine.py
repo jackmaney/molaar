@@ -2,6 +2,7 @@ from Game.Shared.GameConstants import *
 from Game.Scene import *
 from Molarr import Molarr
 from Candy import Candy
+from Toothbrush import Toothbrush
 from TimeKeeper import TimeKeeper
 
 class Engine(object):
@@ -10,14 +11,13 @@ class Engine(object):
         pygame.init()
         pygame.mixer.init()
 
-
-
         self.score = 0
         self.timeKeeper = TimeKeeper(self)
 
         self.player = None
         self.playerGroup = None
         self.candies = pygame.sprite.Group()
+        self.toothbrushes = pygame.sprite.Group()
 
         self.score = 0
 
@@ -25,8 +25,6 @@ class Engine(object):
         self.clock = None
 
         self.handlersToRemove = []
-
-
 
         self.pressedKeys = None
         self.screen = pygame.display.set_mode(SCREEN_SIZE, pygame.DOUBLEBUF, 32)
@@ -36,17 +34,20 @@ class Engine(object):
         self.allCandies = [pygame.image.load(img).convert_alpha() for img in CANDY_FILES]
 
         impactSound = pygame.mixer.Sound(SOUND_IMPACT_FILE)
-        ductTapeSound = pygame.mixer.Sound("Game/Assets/Sounds/89782__zerolagtime__tape03-duct-tape-3_MODIFIED.wav")
+        ductTapeSound = pygame.mixer.Sound(SOUND_DUCT_TAPE_FILE)
+        toothbrushSound = pygame.mixer.Sound(SOUND_TOOTHBRUSH)
 
         self.sounds = {
             "impact": impactSound,
-            "ductTape": ductTapeSound
+            "ductTape": ductTapeSound,
+            "toothbrush": toothbrushSound
         }
 
         self.baseMolarrImage = pygame.image.load(MOLARR_IMG).convert_alpha()
         self.baseHammerImage = pygame.image.load(HAMMER_IMG).convert_alpha()
 
         self.loadEnemyTimer = 0
+        self.loadToothbrushTimer = 0
 
         self.scenes = {
             "opening": OpeningCutScene,
@@ -79,6 +80,13 @@ class Engine(object):
 
         while len(self.candies) < numCandies:
             self.candies.add(Candy(self))
+
+    def loadToothbrushes(self):
+
+        numBrushes = self.timeKeeper.numToothbrushes()
+
+        while len(self.toothbrushes) < numBrushes:
+            self.toothbrushes.add(Toothbrush(self))
 
     def startGame(self):
 
@@ -115,10 +123,22 @@ class Engine(object):
         elif n < 3600:
             numMin = n // 60
             numLeftOverSec = n - 60 * numMin
-            return str(numMin) + ":" + str(numLeftOverSec)
+            secStr = str(numLeftOverSec)
+            if numLeftOverSec < 10:
+                secStr = "0" + secStr
+            return str(numMin) + ":" + secStr
         else:
+            # If you can make it through an entire hour, I salute you...
             numHours = n // 3600
             numLeftOverMinutes = n - numHours // 60
             numLeftOverSec = n - 60 * numLeftOverMinutes
 
-            return str(numHours) + ":" + str(numLeftOverMinutes) + ":" + str(numLeftOverSec)
+            minStr = str(numLeftOverMinutes)
+            if numLeftOverMinutes < 10:
+                minStr = "0" + minStr
+
+            secStr = str(numLeftOverSec)
+            if numLeftOverSec < 10:
+                secStr = "0" + secStr
+
+            return str(numHours) + ":" + minStr + ":" + secStr

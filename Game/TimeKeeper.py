@@ -40,3 +40,7 @@ class TimeKeeper(object):
         minKey = self.getMinKey(CANDY_SEEKER_PROBABILITY_THRESHOLDS)
 
         return random() <= CANDY_SEEKER_PROBABILITY_THRESHOLDS[minKey]
+
+    def numToothbrushes(self):
+
+        return TOOTHBRUSH_THRESHOLDS[self.getMinKey(TOOTHBRUSH_THRESHOLDS)]

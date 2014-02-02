@@ -6,6 +6,7 @@ This is for keeping track of assets and other things that aren't mine (even thou
 * [The opening score][openingmusic] ([CC-BY 3.0][CC-by-3.0] licensed) was provided by [Yubatake][Yubatake] at [opengameart.org][opengameart]
 * [The game music][gamemusic] ([CC-BY 3.0][CC-by-3.0] licensed) was provided by [cynicmusic][cynicmusic] at [opengameart.org][opengameart]
 * [The duct tape sound effect][ducttape] ([CC-BY 3.0][CC-by-3.0] licensed) was provided by [zerolagtime][zerolagtime] at [freesound.org][freesound]
+* [The sound effect for the healing power of toothpaste][toothpaste] ([CC-BY 3.0][CC-by-3.0] licensed) was provided by [Iwan Gabovitch][qubodup] at [opengameart.org][opengameart]
 
 [candy-img]: http://opengameart.org/content/candy-pack-1
 [lumimae]: http://opengameart.org/users/lumimae
@@ -23,3 +24,5 @@ This is for keeping track of assets and other things that aren't mine (even thou
 [zerolagtime]: http://www.freesound.org/people/zerolagtime/
 [ducttape]: http://www.freesound.org/people/zerolagtime/sounds/89782/
 [freesound]: http://www.freesound.org
+[toothpaste]: http://opengameart.org/content/shimmer-glitter-magic
+[qobodup]: http://opengameart.org/users/qubodup

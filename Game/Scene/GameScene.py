@@ -15,10 +15,6 @@ class GameScene(Scene):
         pygame.mixer.music.load(GAME_MUSIC_FILE)
         pygame.mixer.music.play(loops=-1)
 
-
-
-
-
     def update(self):
 
         self.texts = []
@@ -27,7 +23,16 @@ class GameScene(Scene):
         self.addText("Time: " + self.engine.msToHMS(self.engine.timeKeeper.timer), (0, 40))
 
         self.engine.player.update()
+        self.engine.toothbrushes.update()
         self.engine.candies.update()
+
+        for brush in self.engine.toothbrushes:
+            if self.engine.player.bodyRect().colliderect(brush.rect):
+                self.engine.playSound("toothbrush")
+                brush.kill()
+                self.engine.player.health += HEALTH_REGAINED_FROM_TOOTHBRUSH
+                if self.engine.player.health > 100:
+                    self.engine.player.health = 100
 
         candidateCandies = pygame.sprite.spritecollide(self.engine.player, self.engine.candies, False)
         for candy in candidateCandies:
@@ -52,10 +57,15 @@ class GameScene(Scene):
             self.engine.loadEnemies()
             self.engine.loadEnemyTimer = self.engine.timeKeeper.timer
 
+        if self.engine.timeKeeper.timer - self.engine.loadToothbrushTimer >= TIME_BETWEEN_TOOTHBRUSH_SPAWNS:
+            self.engine.loadToothbrushes()
+            self.engine.loadToothbrushTimer = self.engine.timeKeeper.timer
+
     def render(self):
         Scene.render(self)
 
         self.engine.player.render()
+        self.engine.toothbrushes.draw(self.engine.screen)
         self.engine.candies.draw(self.engine.screen)
 
     def handleEvents(self, events):

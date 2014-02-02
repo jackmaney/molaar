@@ -30,6 +30,8 @@ for i in list(range(30, 101, 10)):
 
 MOLARR_SIZE = (91, 109)
 
+TOOTHBRUSH_IMG = os.path.join("Game", "Assets", "Images", "Toothbrush.png")
+
 HAMMER_COLLISION_RECTS = [
     {"size": (81, 60), "position": (85, 9)},
     {"size": (78, 68), "position": (99, 14)},
@@ -55,6 +57,7 @@ TURN_THRESHOLD = 5
 
 SOUND_IMPACT_FILE = os.path.join("Game", "Assets", "Sounds", "pumpkin_break_01_0.wav")
 SOUND_DUCT_TAPE_FILE = os.path.join("Game", "Assets", "Sounds", "89782__zerolagtime__tape03-duct-tape-3_MODIFIED.wav")
+SOUND_TOOTHBRUSH = os.path.join("Game", "Assets", "Sounds", "shimmer_1.wav")
 OPENING_MUSIC_FILE = os.path.join("Game", "Assets", "Music", "Elegy_Dm.wav")
 GAME_MUSIC_FILE = os.path.join("Game", "Assets", "Music", "battleThemeA.wav")
 
@@ -95,4 +98,12 @@ CANDY_SEEKER_PROBABILITY_THRESHOLDS = {
     60000: 0.5
 }
 
+TOOTHBRUSH_THRESHOLDS = {
+    60000: 2,
+    120000: 1
+}
+
 TIME_BETWEEN_ENEMY_LOADS = 500
+TIME_BETWEEN_TOOTHBRUSH_SPAWNS = 5000
+
+HEALTH_REGAINED_FROM_TOOTHBRUSH = 20
