@@ -28,6 +28,21 @@ class Engine(object):
 
         self.pressedKeys = None
 
+        pygame.init()
+        pygame.mixer.init()
+
+        impactSound = pygame.mixer.Sound(SOUND_IMPACT_FILE)
+
+        self.sounds = {
+            "impact": impactSound
+        }
+
+    def playSound(self, soundName):
+        sound = self.sounds[soundName]
+        sound.stop()
+        sound.play()
+
+
     def handleEvents(self, events):
         for event in events:
             if event.type == pygame.QUIT:
@@ -36,7 +51,7 @@ class Engine(object):
 
     def startGame(self):
 
-        pygame.init()
+
 
         self.screen = pygame.display.set_mode(SCREEN_SIZE)
         self.clock = pygame.time.Clock()
@@ -71,6 +86,7 @@ class Engine(object):
                     print "Body Blow!"
                 elif self.player.isSwinging and self.player.hammerHeadRect().colliderect(candy.rect):
                     print "Hammer hit!"
+                    self.playSound("impact")
                     candy.kill()
                     print len(self.candies)
 
