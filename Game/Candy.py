@@ -6,16 +6,16 @@ import numpy as np
 
 
 class Candy(Entity):
-    def __init__(self, engine, image=None, maxSpeed=None, health=1, isSeeker=None):
+    def __init__(self, engine, image=None, speed=None, health=1, isSeeker=None):
 
         self.engine = engine
 
         self.damage = self.engine.timeKeeper.candyDamage()
 
-        if maxSpeed is None:
+        if speed is None:
             self.maxSpeed = self.engine.timeKeeper.candySpeed()
         else:
-            self.maxSpeed = maxSpeed
+            self.maxSpeed = speed
 
         self.destination = None
 
@@ -64,7 +64,7 @@ class Candy(Entity):
 
     def update(self):
         if self.isSeeker:
-            velocity = np.array(self.engine.player.centerOfBody(), np.float64) - \
+            velocity = np.array(self.engine.player.centerOfBody, np.float64) - \
                 np.array(self.getCenter(), np.float64)
 
             velocity /= np.linalg.norm(velocity)

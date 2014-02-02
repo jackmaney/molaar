@@ -7,7 +7,7 @@ import numpy as np
 class Molarr(Entity):
 
     def __init__(self, engine, image=None, velocity=(0, 0),
-                 maxSpeed=40, destination=None, health=100):
+                 speed=40, destination=None, health=100):
 
         self.velocity = velocity
         self.sprite = None
@@ -35,7 +35,7 @@ class Molarr(Entity):
         self.overrideFlip = False
 
         Entity.__init__(self, engine, self.image,
-                        velocity, maxSpeed, (0, 0), destination, health)
+                        velocity, speed, (0, 0), destination, health)
 
     def handleEvents(self, events):
         pressed = self.engine.pressedKeys

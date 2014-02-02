@@ -7,12 +7,12 @@ class TimeKeeper(object):
         self.engine = engine
         self.timer = 0
 
-    def getMinKey(self, dict):
+    def getMinKey(self, thresholds):
 
-        futureKeys = [time for time in dict if time >= self.timer]
+        futureKeys = [time for time in thresholds if time >= self.timer]
 
         if len(futureKeys) == 0:
-            return max(dict.keys())
+            return max(thresholds.keys())
         else:
             return min(futureKeys)
 

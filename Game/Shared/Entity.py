@@ -4,7 +4,7 @@ import pygame
 
 
 class Entity(pygame.sprite.Sprite):
-    def __init__(self, engine, image, velocity, maxSpeed,
+    def __init__(self, engine, image, velocity, speed,
                  initialPosition, destination=None, health=100, spriteGroup=None):
 
         if spriteGroup is not None:
@@ -19,7 +19,7 @@ class Entity(pygame.sprite.Sprite):
 
         self.engine = engine
         self.health = health
-        self.maxSpeed = maxSpeed
+        self.maxSpeed = speed
 
         self.image = image
         self.destination = None
@@ -33,7 +33,7 @@ class Entity(pygame.sprite.Sprite):
         return np.array(self.rect.topleft, np.int32)
 
     def getCenter(self):
-        return np.ceil(self.getPosition() + self.size.astype(np.float64) / 2.0).astype(np.int32)
+        return np.ceil(self.getPosition() + self.rect.size / 2.0).astype(np.int32)
 
     def setPosition(self, pos):
         self.rect.x = pos[0]
@@ -46,10 +46,10 @@ class Entity(pygame.sprite.Sprite):
         return self.rect.y < 0
 
     def outOfBoundsRight(self):
-        return self.rect.x + self.size[0] > SCREEN_SIZE[0]
+        return self.rect.x + self.rect.size[0] > SCREEN_SIZE[0]
 
     def outOfBoundsBottom(self):
-        return self.rect.y + self.size[1] > SCREEN_SIZE[1]
+        return self.rect.y + self.rect.size[1] > SCREEN_SIZE[1]
 
     def keepInWindow(self):
         if self.outOfBoundsLeft():
@@ -61,11 +61,11 @@ class Entity(pygame.sprite.Sprite):
             self.rect.y = 0
 
         if self.outOfBoundsRight():
-            self.rect.x = SCREEN_SIZE[0] - self.size[0]
+            self.rect.x = SCREEN_SIZE[0] - self.rect.size[0]
             self.velocity[0] *= -1
 
         if self.outOfBoundsBottom():
-            self.rect.y = SCREEN_SIZE[1] - self.size[1]
+            self.rect.y = SCREEN_SIZE[1] - self.rect.size[1]
             self.velocity[1] *= -1
 
     def update(self):
