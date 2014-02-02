@@ -50,3 +50,6 @@ MOLARR_CENTER_OFFSET = np.array([46, 53], np.int32)
 MOUSE_MOVEMENT_THRESHOLD = 20
 
 TURN_THRESHOLD = 5
+
+SOUND_IMPACT_FILE = os.path.join("Game", "Assets", "Sounds", "pumpkin_break_01_0.wav")
+
